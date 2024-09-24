@@ -1,5 +1,7 @@
-import { http } from '../utils/http'
+import { http } from '../utils/http';
+import type { IHomeData } from '../model/homeData';
 
-const getHomeDataApi = () => {
-  return http.get("/home/info")
+// 获取首页数据
+export const getHomeDataApi = (): Promise<IHomeData> => {
+  return http.get<IHomeData>('/home/info');
 }
