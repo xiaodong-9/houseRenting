@@ -1,8 +1,10 @@
 import { getHomeDataApi } from '../api/home';
 import type { INavList, IPlanList, ITileList } from '../model/homeData';
 import { BannerListDataSource } from '../model/homeData';
+import { PADDING } from '../constants/size';
 import SwiperLayout from '../views/Home/SwiperLayout';
 import SearchBar from '../views/Home/SearchBar';
+import NavList from '../views/Home/NavList';
 
 @Component
 export default struct Home {
@@ -31,9 +33,19 @@ export default struct Home {
 
   build() {
     Stack() {
-      Column() {
-        SwiperLayout({ bannerList: this.bannerList })
-      }.width('100%').align(Alignment.TopStart)
+      Scroll() {
+        Column() {
+          SwiperLayout({ bannerList: this.bannerList })
+
+          // 首页除轮播图外，都有一个左右padding
+          Column() {
+            NavList({ navList: this.navList })
+          }.padding({ left: PADDING, right: PADDING })
+        }
+        .justifyContent(FlexAlign.Start)
+      }
+      .height('100%')
+      .align(Alignment.TopStart)
 
       SearchBar()
 
