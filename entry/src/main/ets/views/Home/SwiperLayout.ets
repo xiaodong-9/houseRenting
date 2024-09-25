@@ -17,7 +17,8 @@ export default struct SwiperLayout {
         .color('#CCCBCB')
         .selectedColor($r('app.color.primary'))
     )
-    .autoPlay(true)
-    .interval(1000)
+
+    // .autoPlay(true)
+    // .interval(1000)
   }
 }

@@ -2,6 +2,7 @@ import { getHomeDataApi } from '../api/home';
 import type { INavList, IPlanList, ITileList } from '../model/homeData';
 import { BannerListDataSource } from '../model/homeData';
 import SwiperLayout from '../views/Home/SwiperLayout';
+import SearchBar from '../views/Home/SearchBar';
 
 @Component
 export default struct Home {
@@ -29,8 +30,13 @@ export default struct Home {
   }
 
   build() {
-    Column() {
-      SwiperLayout({ bannerList: this.bannerList })
-    }.width('100%').height('100%').align(Alignment.TopStart)
+    Stack() {
+      Column() {
+        SwiperLayout({ bannerList: this.bannerList })
+      }.width('100%').align(Alignment.TopStart)
+
+      SearchBar()
+
+    }.height("100%").alignContent(Alignment.TopStart)
   }
 }
