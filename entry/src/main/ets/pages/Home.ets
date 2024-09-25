@@ -7,6 +7,7 @@ import SearchBar from '../views/Home/SearchBar';
 import NavList from '../views/Home/NavList';
 import TileList from '../views/Home/TileList';
 import PlanList from '../views/Home/PlanList';
+import Ad from '../views/Home/Ad';
 
 @Component
 export default struct Home {
@@ -44,6 +45,7 @@ export default struct Home {
             NavList({ navList: this.navList })
             TileList({ tileList: this.tileList })
             PlanList({ planList: this.planList })
+            Ad({ adPicture: this.adPicture })
 
           }.padding({ left: PADDING, right: PADDING })
         }
