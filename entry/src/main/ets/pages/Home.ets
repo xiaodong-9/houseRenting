@@ -8,6 +8,7 @@ import NavList from '../views/Home/NavList';
 import TileList from '../views/Home/TileList';
 import PlanList from '../views/Home/PlanList';
 import Ad from '../views/Home/Ad';
+import RoomRecommend from '../views/Home/RoomRecommend';
 
 @Component
 export default struct Home {
@@ -48,11 +49,15 @@ export default struct Home {
             Ad({ adPicture: this.adPicture })
 
           }.padding({ left: PADDING, right: PADDING })
+
+          RoomRecommend()
+
         }
         .justifyContent(FlexAlign.Start)
       }
       .height('100%')
       .align(Alignment.TopStart)
+      .scrollBar(BarState.Off)
 
       SearchBar()
 
