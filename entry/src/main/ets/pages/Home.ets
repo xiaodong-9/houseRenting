@@ -5,6 +5,7 @@ import { PADDING } from '../constants/size';
 import SwiperLayout from '../views/Home/SwiperLayout';
 import SearchBar from '../views/Home/SearchBar';
 import NavList from '../views/Home/NavList';
+import TileList from '../views/Home/TileList';
 
 @Component
 export default struct Home {
@@ -40,6 +41,7 @@ export default struct Home {
           // 首页除轮播图外，都有一个左右padding
           Column() {
             NavList({ navList: this.navList })
+            TileList({ tileList: this.tileList })
           }.padding({ left: PADDING, right: PADDING })
         }
         .justifyContent(FlexAlign.Start)

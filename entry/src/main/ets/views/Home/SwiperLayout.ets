@@ -1,3 +1,4 @@
+// 轮播图
 import type { BannerListDataSource, IBannerItem } from '../../model/homeData'
 
 @Component

@@ -1,3 +1,4 @@
+// 首页搜索框
 import { PADDING } from '../../constants/size'
 
 @Component

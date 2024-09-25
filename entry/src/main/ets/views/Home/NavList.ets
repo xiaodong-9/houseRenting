@@ -1,3 +1,4 @@
+// nav商品
 import type { INavItem, INavList } from '../../model/homeData'
 
 @Component
