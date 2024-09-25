@@ -6,6 +6,7 @@ import SwiperLayout from '../views/Home/SwiperLayout';
 import SearchBar from '../views/Home/SearchBar';
 import NavList from '../views/Home/NavList';
 import TileList from '../views/Home/TileList';
+import PlanList from '../views/Home/PlanList';
 
 @Component
 export default struct Home {
@@ -38,10 +39,12 @@ export default struct Home {
         Column() {
           SwiperLayout({ bannerList: this.bannerList })
 
-          // 首页除轮播图外，都有一个左右padding
+          // 首页除轮播图外，有一个左右padding
           Column() {
             NavList({ navList: this.navList })
             TileList({ tileList: this.tileList })
+            PlanList({ planList: this.planList })
+
           }.padding({ left: PADDING, right: PADDING })
         }
         .justifyContent(FlexAlign.Start)
