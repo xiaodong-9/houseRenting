@@ -1,14 +1,15 @@
-import type { IBannerItem, IBannerList } from '../../model/homeData'
+import type { BannerListDataSource, IBannerItem } from '../../model/homeData'
 
 @Component
 export default struct SwiperLayout {
-  @Prop bannerList: IBannerList
+  // 大概是因为绕了一层homeData，index获取数据-homeData处理数据-这里使用数据，所以需要使用ObjectLink
+  @ObjectLink bannerList: BannerListDataSource
 
   build() {
     Swiper() {
-      ForEach(this.bannerList, (banner: IBannerItem) => {
-        Image(banner.imageURL).width('100%').height(175)
-      }, (item: IBannerItem) => item.id + '')
+      LazyForEach(this.bannerList, (banner: IBannerItem) => {
+        Image(banner.imageURL).width("100%").height(175)
+      }, (item: IBannerItem) => item.id + "")
     }
     .loop(true)
     .indicator(
