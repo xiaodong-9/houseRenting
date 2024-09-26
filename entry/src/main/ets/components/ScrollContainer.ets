@@ -1,4 +1,5 @@
 import { IColor } from '../model/homeData';
+import { getWindowBottomHeight, getWindowTopHeight } from '../utils/responsive';
 
 @Component
 export default struct ScrollContainer {
@@ -17,7 +18,6 @@ export default struct ScrollContainer {
   handleScroll = (xOffset: number, yOffset: number) => {
     // xOffset 每次触发滚动时，x轴滚动距离（单个
     // yOffset 每次触发滚动时，y轴滚动距离（单个 下为正，上为负
-    console.log(`${yOffset}`)
     this.scrollY += yOffset;
     // 因为获取的是单个滚动距离，所以需要相加
     if (this.scrollY < 0) {
@@ -61,7 +61,7 @@ export default struct ScrollContainer {
       Column() {
         // 渲染头部导航
         this.navBuilder({ fontColor: this.fontColor, bgColor: this.bgColor })
-      }.backgroundColor(this.bgColor)
+      }.backgroundColor(this.bgColor).padding({ top: getWindowTopHeight(), bottom: getWindowBottomHeight() })
 
     }.height('100%').alignContent(Alignment.TopStart)
 
