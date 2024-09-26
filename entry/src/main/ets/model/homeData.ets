@@ -126,3 +126,8 @@ export interface IPlanItem {
 }
 
 export type IPlanList = IPlanItem[]
+
+export interface IColor {
+  fontColor: string;
+  bgColor: string;
+}
