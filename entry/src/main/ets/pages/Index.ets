@@ -3,6 +3,7 @@ import See from './See';
 import Service from './Service';
 import Discover from './Discover';
 import My from './My';
+import { getWindowBottomHeight, rvp } from '../utils/responsive';
 
 @Entry
 @Component
@@ -12,10 +13,12 @@ struct Index {
   @Builder
   TabBuilder(image: Resource, activeImage: Resource, text: string, index: number) {
     Column() {
-      Image(this.currentTabBarIndex === index ? activeImage : image).width(28).height(28)
+      Image(this.currentTabBarIndex === index ? activeImage : image).width(rvp(28)).height(28)
       Text(text)
-        .fontSize(10)
+        .fontSize(rvp(10))
         .fontColor(this.currentTabBarIndex === index ? $r('app.color.black') : $r('app.color.gray_text'))
+        .height(rvp(15))
+
     }
   }
 
@@ -42,10 +45,15 @@ struct Index {
         My()
       }.tabBar(this.TabBuilder($r('app.media.tabbar_my'), $r('app.media.tabbar_my_active'), '我的', 4))
     }
-    .barHeight(50) //tab导航栏的高度
-    .scrollable(false)
+    .vertical(false)
+    // 设置tabbar在竖直方向，默认为false
+    .barMode(BarMode.Fixed) //用于控制导航栏是否可以滚动，比方说超出可以左滑看别的item
+    .scrollable(false) //
+    .barHeight(rvp(50) + getWindowBottomHeight()) // 设置 tab 导航栏的高度，默认 56
     .onChange((index) => {
       this.currentTabBarIndex = index
     })
+    .backgroundColor($r('app.color.white'))
+
   }
 }

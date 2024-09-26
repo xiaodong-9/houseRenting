@@ -1,5 +1,6 @@
 // nav商品
-import type { INavItem, INavList } from '../../model/homeData'
+import type { INavItem, INavList } from '../../model/homeData';
+import { rvp } from '../../utils/responsive';
 
 @Component
 export default struct NavList {
@@ -10,21 +11,21 @@ export default struct NavList {
     Grid() {
       ForEach(this.navList, (nav: INavItem) => {
         GridItem() {
-          Column({ space: 8 }) {
+          Column({ space: rvp(8) }) {
             // space 是 image 和 text 的间距
-            Image(nav.imageURL).width('100%').height(56).objectFit(ImageFit.Fill)
-            Text(nav.title).fontSize(12)
+            Image(nav.imageURL).width('100%').height(rvp(56)).objectFit(ImageFit.Fill)
+            Text(nav.title).fontSize(rvp(12))
           }
-        }.width(58)
+        }.width(rvp(58))
       }, (nav: INavItem) => nav.id + '')
     }
-    .height(170)
+    .height(rvp(170))
     .margin({
-      top: 24
+      top: rvp(24)
     })
     .rowsTemplate('1fr 1fr') //两行
     .columnsTemplate('1fr 1fr 1fr 1fr') //四列
-    .rowsGap(14) //行与行之间的间距
-    .columnsGap(33) //列与列之间的间距，但因为给每个item设置了固定宽度58所以才看起来没有变化（小屏）
+    .rowsGap(rvp(14)) //行与行之间的间距
+    .columnsGap(rvp(33)) //列与列之间的间距，但因为给每个item设置了固定宽度58所以才看起来没有变化（小屏）
   }
 }

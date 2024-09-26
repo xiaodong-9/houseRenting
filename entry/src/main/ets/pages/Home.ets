@@ -10,6 +10,7 @@ import PlanList from '../views/Home/PlanList';
 import Ad from '../views/Home/Ad';
 import RoomRecommend from '../views/Home/RoomRecommend';
 import ScrollContainer from '../components/ScrollContainer';
+import { rvp } from '../utils/responsive';
 
 @Component
 export default struct Home {
@@ -50,7 +51,7 @@ export default struct Home {
       PlanList({ planList: this.planList })
       Ad({ adPicture: this.adPicture })
 
-    }.padding({ left: PADDING, right: PADDING })
+    }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
 
     RoomRecommend()
   }

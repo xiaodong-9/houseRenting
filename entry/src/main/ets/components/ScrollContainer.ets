@@ -1,5 +1,6 @@
+import { window } from '@kit.ArkUI';
 import { IColor } from '../model/homeData';
-import { getWindowBottomHeight, getWindowTopHeight } from '../utils/responsive';
+import { getWindowBottomHeight, getWindowTopHeight, rvp } from '../utils/responsive';
 
 @Component
 export default struct ScrollContainer {
@@ -9,6 +10,14 @@ export default struct ScrollContainer {
   scrollY: number = 0;
   @State bgColor: string = 'rgba(255, 255, 255, 0)'
   @State fontColor: string = 'rgb(255, 255, 255)'
+  // 设置 window 状态栏颜色
+  setWindowStatusColor = async () => {
+    const windowClass = await window.getLastWindow(getContext())
+    windowClass.setWindowSystemBarProperties({
+      statusBarContentColor: this.fontColor,
+      navigationBarContentColor: this.fontColor
+    })
+  }
 
   @Builder
   defaultBuilder() {
@@ -24,6 +33,8 @@ export default struct ScrollContainer {
       this.scrollY = 0;
     }
     this.calcColor()
+    this.setWindowStatusColor();
+
   }
   // 计算颜色
   calcColor = () => {
@@ -55,7 +66,7 @@ export default struct ScrollContainer {
       .scrollBar(BarState.Off)
       .align(Alignment.TopStart)
       .backgroundColor($r('app.color.bg_gray_second'))
-      .padding({ bottom: 10 })
+      .padding({ bottom: rvp(10) })
       .onDidScroll(this.handleScroll)
 
       Column() {
