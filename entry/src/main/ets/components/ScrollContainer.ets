@@ -11,11 +11,11 @@ export default struct ScrollContainer {
   @State bgColor: string = 'rgba(255, 255, 255, 0)'
   @State fontColor: string = 'rgb(255, 255, 255)'
   // 设置 window 状态栏颜色
-  setWindowStatusColor = async () => {
+  setWindowStatusColor = async (color: string) => {
     const windowClass = await window.getLastWindow(getContext())
     windowClass.setWindowSystemBarProperties({
-      statusBarContentColor: this.fontColor,
-      navigationBarContentColor: this.fontColor
+      statusBarContentColor: color,
+      navigationBarContentColor: color
     })
   }
 
@@ -33,7 +33,6 @@ export default struct ScrollContainer {
       this.scrollY = 0;
     }
     this.calcColor()
-    this.setWindowStatusColor();
 
   }
   // 计算颜色
@@ -42,6 +41,8 @@ export default struct ScrollContainer {
     if (this.scrollY < 10) {
       this.bgColor = 'rgba(255, 255, 255, 0)'
       this.fontColor = 'rgb(255, 255, 255,1)'
+      this.setWindowStatusColor("#ffffff");
+
     } else if (this.scrollY <= 50) {
       // 渐变中（0->1）
       const colorOpacty = (this.scrollY - 10) / (50 - 10)
@@ -51,6 +52,7 @@ export default struct ScrollContainer {
       // 这里也要给透明度，要不然就会不展示
       this.bgColor = 'rgba(255, 255, 255,1)'
       this.fontColor = 'rgb(0, 0, 0,1)'
+      this.setWindowStatusColor("#000000");
     }
   }
 
