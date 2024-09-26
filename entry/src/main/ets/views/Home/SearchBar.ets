@@ -1,11 +1,13 @@
-// 首页搜索框
-import { PADDING } from '../../constants/size'
+import { PADDING } from '../../constants/size';
 
 @Component
 export default struct SearchBar {
+  @Prop bgColor: string;
+  @Prop fontColor: string;
+
   build() {
     Row() {
-      Text("北京").fontSize(14).fontColor($r('app.color.white'))
+      Text("北京").fontSize(14).fontColor(this.fontColor)
       Row() {
         // imageStyles 对图片进行统一的处理 宽高一致，并且拉伸
         Image($r("app.media.search")).imageStyles(18).margin({ right: 10 })
@@ -40,7 +42,7 @@ export default struct SearchBar {
       })
 
       // 图片需要通过 fillColor 修改颜色，只有 svg 图片能用
-      Image($r("app.media.message")).imageStyles(24).fillColor($r('app.color.white'))
+      Image($r("app.media.message")).imageStyles(24).fillColor(this.fontColor)
     }
     .width('100%')
     .padding({
@@ -50,12 +52,24 @@ export default struct SearchBar {
       bottom: 4
     })
     .justifyContent(FlexAlign.SpaceBetween)
+    .backgroundColor(this.bgColor)
   }
 }
 
+/*
+  @Styles: 用来定义复用样式
+  @Extend: 用来扩展组件样式（只有这个组件能用）
+
+  @Styles 和 @Extend 都可以用来复用样式，有什么区别：
+    1. @Styles 只支持通用属性和通用事件。@Extend 即通用属性和通用事件，也支持定义组件私有属性和私有事件
+    2. @Styles 不支持传参。@Extend 支持传参（更灵活）
+    3. @Styles 可以定义组件内或全局。@Extend 只支持全局
+
+    注意：全局指的是当前文件内生效。不是真正的全局
+ */
+
 @Extend(Image)
 function imageStyles(size: number) {
-  // objectFit(ImageFit.Fill) 将图片拉伸到最大
   .width(size).height(size).objectFit(ImageFit.Fill)
 }
 
