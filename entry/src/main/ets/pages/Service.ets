@@ -14,12 +14,7 @@ import ServiceCalendar from '../views/Service/ServiceCalendar';
 export default struct Service {
   @State vipServiceList: IVipServiceList = [];
   @State homeServiceList: IHomeServiceList = [];
-  @State serviceActivity: IServiceActivity = {
-    name: '',
-    img: '',
-    title: '',
-    subTitle: '',
-  };
+  @State serviceActivity: Partial<IServiceActivity> = {};
 
   aboutToAppear() {
     this.getServiceData()

@@ -6,7 +6,7 @@ import { BORDER_RADIUS, BORDER_RADIUS_S } from '../../constants/size';
 
 @Component
 export default struct ServiceCalendar {
-  @Prop serviceActivity: IServiceActivity
+  @Prop serviceActivity: Partial<IServiceActivity>
   @State calendarList: string[] = []
 
   aboutToAppear() {
