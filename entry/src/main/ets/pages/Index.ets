@@ -23,7 +23,8 @@ struct Index {
   }
 
   build() {
-    Tabs({ barPosition: BarPosition.End }) {
+    // index 设置默认当前为哪个页面
+    Tabs({ barPosition: BarPosition.End, index: 1 }) {
       TabContent() {
         Home()
       }.tabBar(this.TabBuilder($r('app.media.tabbar_home'), $r('app.media.tabbar_home_active'), '首页', 0))
