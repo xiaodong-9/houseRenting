@@ -1,20 +1,24 @@
 import { getServiceDataApi } from '../api/service';
 import { IColor } from '../model/homeData';
-import { IHomeServiceList, IServiceActivity, IVipServiceList } from '../model/ServiceData';
+import { ICleaningServiceInfoList, IHomeServiceList, IServiceActivity, IVipServiceList } from '../model/ServiceData';
 import { getWindowTopHeight, rvp } from '../utils/responsive';
 import { PADDING } from '../constants/size';
+
 import Bg from '../views/Service/Bg';
 import ScrollContainer from '../components/ScrollContainer';
 import NavBar from '../views/Service/NavBar';
 import VIP from '../views/Service/VIP';
 import DomesticService from '../views/Service/DomesticService';
 import ServiceCalendar from '../views/Service/ServiceCalendar';
+import ServiceTabs from '../views/Service/ServiceTabs';
 
 @Component
 export default struct Service {
   @State vipServiceList: IVipServiceList = [];
   @State homeServiceList: IHomeServiceList = [];
   @State serviceActivity: Partial<IServiceActivity> = {};
+  @State serviceTabImage: string = ''
+  @State cleaningServiceInfo: ICleaningServiceInfoList = []
 
   aboutToAppear() {
     this.getServiceData()
@@ -25,6 +29,8 @@ export default struct Service {
     this.vipServiceList = serviceData.vipServiceList;
     this.homeServiceList = serviceData.homeServiceList;
     this.serviceActivity = serviceData.serviceActivity;
+    this.serviceTabImage = serviceData.newcomerZone.img;
+    this.cleaningServiceInfo = serviceData.cleaningServiceInfo;
   }
 
   @Builder
@@ -40,6 +46,7 @@ export default struct Service {
         VIP({ vipServiceList: this.vipServiceList })
         DomesticService({ homeServiceList: this.homeServiceList })
         ServiceCalendar({ serviceActivity: this.serviceActivity })
+        ServiceTabs({ serviceTabImage: this.serviceTabImage, cleaningServiceInfo: this.cleaningServiceInfo })
       }.padding({ left: rvp(PADDING), right: rvp(PADDING), top: getWindowTopHeight() })
     }.alignContent(Alignment.TopStart)
   }
