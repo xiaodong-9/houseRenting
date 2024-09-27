@@ -26,7 +26,6 @@ export function getWindowWidth() {
     // 预览器平板测试使用这个值
     // windowWidth = 640
   }
-  console.log(`${windowWidth}出来了`)
   return windowWidth
 }
 
@@ -41,6 +40,5 @@ export function rvp(val: number) {
     *
     * 解方程式得出: x = val / 360 * 实际设备屏幕宽度
    */
-  console.log(`${getWindowWidth()}`)
   return val / 360 * getWindowWidth()
 }

@@ -4,11 +4,15 @@ import Service from './Service';
 import Discover from './Discover';
 import My from './My';
 import { getWindowBottomHeight, rvp } from '../utils/responsive';
+import type { IColors } from '../model/ColorsData';
 
 @Entry
 @Component
 struct Index {
-  @State currentTabBarIndex: number = 0;
+  @StorageLink('navBarFontColor') navBarFontColor: string = ''
+  @StorageLink('navBarBgColor') navBarBgColor: string = ''
+  @State currentTabBarIndex: number = 2; //当前高亮的下标
+  colors: IColors = []
 
   @Builder
   TabBuilder(image: Resource, activeImage: Resource, text: string, index: number) {
@@ -24,7 +28,7 @@ struct Index {
 
   build() {
     // index 设置默认当前为哪个页面
-    Tabs({ barPosition: BarPosition.End, index: 1 }) {
+    Tabs({ barPosition: BarPosition.End, index: this.currentTabBarIndex }) {
       TabContent() {
         Home()
       }.tabBar(this.TabBuilder($r('app.media.tabbar_home'), $r('app.media.tabbar_home_active'), '首页', 0))
@@ -52,6 +56,16 @@ struct Index {
     .scrollable(false) //
     .barHeight(rvp(50) + getWindowBottomHeight()) // 设置 tab 导航栏的高度，默认 56
     .onChange((index) => {
+      // 将上个页面color存储起来
+      this.colors[this.currentTabBarIndex] = {
+        navBarBgColor: this.navBarBgColor,
+        navBarFontColor: this.navBarFontColor
+      }
+      // 将当前页面的color赋值上去
+      this.navBarFontColor = this.colors[index]?.navBarFontColor || 'rgb(255, 255, 255)'
+      this.navBarBgColor = this.colors[index]?.navBarBgColor || 'rgba(255, 255, 255, 0)'
+
+
       this.currentTabBarIndex = index
     })
     .backgroundColor($r('app.color.white'))
