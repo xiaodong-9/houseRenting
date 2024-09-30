@@ -1,20 +1,14 @@
+import NavBar from '../../components/NavBar'
+import { getWindowTopHeight } from '../../utils/responsive'
+
 @Entry
 @Component
 struct RentRoomList {
-  @State message: string = 'Hello World';
-
   build() {
-    RelativeContainer() {
-      Text(this.message)
-        .id('RentRoomListHelloWorld')
-        .fontSize(50)
-        .fontWeight(FontWeight.Bold)
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
-    }
-    .height('100%')
-    .width('100%')
+    Stack() {
+      Column() {
+        NavBar({ title: '租房列表' })
+      }.height('100%').padding({ top: getWindowTopHeight() })
+    }.height('100%').alignContent(Alignment.TopStart)
   }
 }
