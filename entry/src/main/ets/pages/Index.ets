@@ -11,7 +11,7 @@ import type { IColors } from '../model/ColorsData';
 struct Index {
   @StorageLink('navBarFontColor') navBarFontColor: string = ''
   @StorageLink('navBarBgColor') navBarBgColor: string = ''
-  @State currentTabBarIndex: number = 3; //当前高亮的下标
+  @State currentTabBarIndex: number = 4; //当前高亮的下标
   colors: IColors = []
 
   @Builder
