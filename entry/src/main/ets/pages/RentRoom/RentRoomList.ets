@@ -1,16 +1,25 @@
-import { getWindowTopHeight } from '../../utils/responsive'
 import NavBar from '../../components/NavBar'
 import SearchFilter from '../../views/RentRoomList/SearchFilter'
+import WaterfallFlow from '../../views/RentRoomList/WaterfallFlow'
 
 @Entry
 @Component
 struct RentRoomList {
   build() {
-    Stack() {
+
+    Column() {
+      Stack() {
+        Column() {
+          NavBar({ title: '租房列表' })
+          SearchFilter()
+        }
+      }
+
+      // Column内部可滑动，Stack不可滑动
       Column() {
-        NavBar({ title: '租房列表' })
-        SearchFilter()
-      }.height('100%').padding({ top: getWindowTopHeight() })
-    }.height('100%').alignContent(Alignment.TopStart)
+        WaterfallFlow()
+      }
+    }
+
   }
 }
