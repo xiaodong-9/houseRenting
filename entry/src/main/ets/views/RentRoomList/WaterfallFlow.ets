@@ -1,9 +1,9 @@
 import { getRentRoomListApi } from '../../api/rentRoom';
 import { IGetRentRoomListParams, IRentRoomItem, RentRoomListDataSource } from '../../model/RentRoomData';
 import { ITagItem } from '../../model/RoomRecommendDataSource';
-
 import { BORDER_RADIUS } from '../../constants/size';
 import { rvp } from '../../utils/responsive';
+import { globalEmitter } from '../../utils/emitter';
 
 @Component
 export default struct WaterfallFlow {
@@ -21,14 +21,39 @@ export default struct WaterfallFlow {
 
   aboutToAppear() {
     this.getRentRoomList();
+    // SearchFilter 组件和 WaterFallFlow 组件是兄弟关系，不能使用父子组件通信的方案进行通信。
+    // 这里我们自己封装自定义事件来进行通信。
+    this.registerGlobalEmitter();
   }
 
+  registerGlobalEmitter() {
+    globalEmitter.on('searchOptionsChange', async (searchOptions: Partial<IGetRentRoomListParams>) => {
+      this.searchOptions.page = 1;
+      this.searchOptions.limit = 10;
+      // 省份ID
+      if (searchOptions.provinceCode) {
+        this.searchOptions.provinceCode = searchOptions.provinceCode;
+      }
+      // 市级ID
+      if (searchOptions.cityCode) {
+        this.searchOptions.cityCode = searchOptions.cityCode;
+      }
+      // 区域ID
+      if (searchOptions.districtCode) {
+        this.searchOptions.districtCode = searchOptions.districtCode;
+      }
+      this.getRentRoomList()
+    })
+  }
+
+  // 获取租房列表资源
   async getRentRoomList() {
     const res = await getRentRoomListApi(this.searchOptions)
     this.roomRoomListDataSource.pushDataList(res.records)
     this.total = res.total
   }
 
+  // 瀑布流下拉到底重新请求数据
   loadMore = () => {
     this.searchOptions.page++;
     this.getRentRoomList()
@@ -141,7 +166,7 @@ export default struct WaterfallFlow {
     .backgroundColor($r('app.color.bg_gray'))
     .width('100%')
     .layoutWeight(1)
-    .layoutDirection(FlexDirection.Column) //设置布局的主轴方向。
+    .layoutDirection(FlexDirection.Column) //设置主轴方向
     .padding({ left: rvp(10), right: rvp(10), top: rvp(10) })
     .onReachEnd(this.loadMore) //瀑布流组件到底末尾位置时触发。
   }
