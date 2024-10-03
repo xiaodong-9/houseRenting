@@ -49,6 +49,10 @@ export default struct WaterfallFlow {
       if (searchOptions.maxRent) {
         this.searchOptions.maxRent = searchOptions.maxRent;
       }
+      // 付款方式
+      if (searchOptions.paymentType) {
+        this.searchOptions.paymentType = searchOptions.paymentType;
+      }
 
       this.getRentRoomList('reloadDataList')
     })

@@ -379,6 +379,71 @@ export default struct SearchFilter {
     }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.rentPriceClose.bind(this))
   }
 
+  // ======== 二、付款方式筛选方法 ========
+  // 付款方式-付款方式变更的方法
+  handlePaymentTypeChange(paymentType: string) {
+    this.paymentTypeData.paymentType = paymentType
+  }
+
+  // 付款方式-点击查看房源
+  paymentTypeSearch() {
+    globalEmitter.emit('searchOptionsChange', {
+      paymentType: this.paymentTypeData.paymentType
+    })
+    this.paymentTypeData.isSearch = true;
+    this.paymentTypeClose()
+  }
+
+  // 付款方式-是否筛选
+  paymentTypeClose() {
+    this.currentSearchType = ''
+    if (this.paymentTypeData.isSearch) {
+      this.paymentTypeData.searchPaymentType = this.paymentTypeData.paymentType
+    } else {
+      this.paymentTypeData.paymentType = this.paymentTypeData.searchPaymentType
+    }
+  }
+
+  // 付款方式-重置
+  paymentTypeReset() {
+    this.paymentTypeData.paymentType = ''
+  }
+
+  // 付款方式筛选的展示列表
+  @Builder
+  PaymentTypeRender() {
+    Column() {
+      Grid() {
+        ForEach(this.paymentTypeData.paymentTypeList, (paymentType: string) => {
+          GridItem() {
+            Text(paymentType)
+              .textStyles(this.paymentTypeData.paymentType === paymentType)
+              .onClick(this.handlePaymentTypeChange.bind(this, paymentType))
+          }
+        }, (paymentType: string) => paymentType)
+      }
+      .columnsTemplate('1fr 1fr 1fr')
+      .rowsTemplate('1fr 1fr 1fr')
+      .height(rvp(100))
+
+      Row({ space: rvp(22) }) {
+        Button('重置')
+          .buttonStyles(rvp(95), '#F0F0F0', $r('app.color.gray_second'))
+          .onClick(this.paymentTypeReset.bind(this))
+        Button('查看房源')
+          .buttonStyles(rvp(211), '#67C0A8', $r('app.color.white'))
+          .onClick(this.paymentTypeSearch.bind(this))
+      }.height(rvp(58)).width('100%').backgroundColor($r('app.color.white')).justifyContent(FlexAlign.Center)
+    }
+    .height(rvp(158))
+    .width('100%')
+    .backgroundColor($r('app.color.white'))
+    .padding({ left: rvp(PADDING), right: rvp(PADDING) })
+
+    Row() {
+    }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.paymentTypeClose.bind(this))
+  }
+
   // 排序筛选的展示列表
   @Builder
   SortRender() {
