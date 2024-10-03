@@ -2,9 +2,9 @@ import type { IRoomRecommendItem } from '../model/RoomRecommendDataSource'
 
 export type IPaymentType = "月付" | "季付" | "半年付" | "年付"
 
-export type IOrderBy = "面积" | "价格"
+export type IOrderBy = "面积" | "价格" | ''
 
-export type IOrderType = "asc" | "desc"
+export type IOrderType = "asc" | "desc" | ''
 
 export interface IGetRentRoomListParams {
   "page": number
@@ -186,4 +186,19 @@ export interface IPaymentTypeData {
   isSearch: boolean,
   paymentType: string,
   searchPaymentType: string
+}
+
+export interface ISortItem {
+  id?: number;
+  icon?: Resource;
+  text?: string;
+  orderBy?: string;
+  orderType?: string;
+}
+
+export type ISortList = ISortItem[]
+
+export interface IsortData {
+  sortList: ISortList;
+  sort: ISortItem;
 }

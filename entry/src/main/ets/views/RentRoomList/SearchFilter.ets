@@ -9,6 +9,8 @@ import type {
   IProvinceList,
   IRentPriceData,
   IRentPriceItem,
+  IsortData,
+  ISortItem,
   LocationDataType
 } from '../../model/RentRoomData';
 
@@ -103,6 +105,53 @@ export default struct SearchFilter {
     paymentType: '',
     searchPaymentType: ''
   }
+  // 排序
+  @State sortData: IsortData = {
+    sortList: [
+      {
+        id: 1,
+        icon: $r('app.media.sort'),
+        text: '综合排序',
+        orderBy: '',
+        orderType: ''
+      },
+      {
+        id: 2,
+        icon: $r('app.media.rent'),
+        text: '价格从低到高',
+        orderBy: 'price',
+        orderType: 'asc'
+      },
+      {
+        id: 3,
+        icon: $r('app.media.rent'),
+        text: '价格从高到低',
+        orderBy: 'price',
+        orderType: 'desc'
+      },
+      {
+        id: 4,
+        icon: $r('app.media.area'),
+        text: '面积从大到小',
+        orderBy: 'area',
+        orderType: 'desc'
+      },
+      {
+        id: 5,
+        icon: $r('app.media.area'),
+        text: '面积从小到大',
+        orderBy: 'area',
+        orderType: 'asc'
+      },
+    ],
+    sort: {
+      id: 1,
+      icon: $r('app.media.sort'),
+      text: '综合排序',
+      orderBy: '',
+      orderType: ''
+    },
+  }
 
   // 展示筛选标题“地区” 或者 是确切的“北京市/东城区”
   getSearchTypeName(item: string) {
@@ -110,6 +159,10 @@ export default struct SearchFilter {
       return this.locationData.searchDistrictName || item
     } else if (item === '租金') {
       return this.rentPriceData.searchRentPrice.text || item
+    } else if (item === '付款方式') {
+      return this.paymentTypeData.searchPaymentType || item
+    } else if (item === '排序') {
+      return this.sortData.sort?.text || item
     }
     return item
   }
@@ -120,9 +173,16 @@ export default struct SearchFilter {
       return this.locationData.searchDistrictName ? $r('app.color.primary') : $r('app.color.black')
     } else if (item === '租金') {
       return this.rentPriceData.searchRentPrice.text ? $r('app.color.primary') : $r('app.color.black')
+    } else if (item === '付款方式') {
+      return this.paymentTypeData.searchPaymentType ? $r('app.color.primary') : $r('app.color.black')
+    } else if (item === '排序') {
+      return this.sortData.sort?.text && this.sortData.sort?.text !== '综合排序' ? $r('app.color.primary') :
+      $r('app.color.black')
     }
     return item
   }
+
+  // ======== 一、地区筛选方法 ========
 
   // 筛选的点击事件
   chooseSearchType(searchType: string) {
@@ -143,13 +203,14 @@ export default struct SearchFilter {
     } else if (searchType === '付款方式') {
       this.paymentTypeData.isSearch = false
       this.paymentTypeClose()
+    } else if (searchType === '排序') {
+      this.sortClose()
     }
 
     // 更新
     this.currentSearchType = searchType;
   }
 
-  // ======== 一、地区筛选方法 ========
   // 地区筛选-获取省市区数据方法
   async getProvinceList() {
     const provinceList: IProvinceList = await getProvinceListApi() //省列表
@@ -232,6 +293,8 @@ export default struct SearchFilter {
     this.getProvinceList()
   }
 
+  // ======== 二、租金筛选方法 ========
+
   // 地区筛选的展示列表
   @Builder
   LocationRender() {
@@ -312,8 +375,6 @@ export default struct SearchFilter {
     }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.locationClose.bind(this))
   }
 
-  // ======== 二、租金筛选方法 ========
-
   // 租金筛选-租金范围的选项发生变化
   handleRentPriceChange(rentPrice: IRentPriceItem) {
     this.rentPriceData.rentPrice = rentPrice
@@ -343,6 +404,8 @@ export default struct SearchFilter {
   rentPriceReset() {
     this.rentPriceData.rentPrice = {}
   }
+
+  // ======== 三、付款方式筛选方法 ========
 
   // 租金筛选的展示列表
   @Builder
@@ -379,7 +442,6 @@ export default struct SearchFilter {
     }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.rentPriceClose.bind(this))
   }
 
-  // ======== 二、付款方式筛选方法 ========
   // 付款方式-付款方式变更的方法
   handlePaymentTypeChange(paymentType: string) {
     this.paymentTypeData.paymentType = paymentType
@@ -444,10 +506,54 @@ export default struct SearchFilter {
     }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.paymentTypeClose.bind(this))
   }
 
+  // ======== 四、排序筛选方法 ========
+  // 排序筛选-选择变更
+  handleSortChange(sort: ISortItem) {
+    this.sortData.sort = sort
+    this.sortSearch()
+  }
+
+  // 排序筛选-请求/相应数据
+  sortSearch() {
+    globalEmitter.emit('searchOptionsChange', {
+      orderBy: this.sortData.sort?.orderBy || '',
+      orderType: this.sortData.sort?.orderType || '',
+    })
+    this.sortClose()
+  }
+
+  sortClose() {
+    this.currentSearchType = ''
+  }
+
+  // 排序筛选-重置
+  sortReset() {
+    this.sortData.sort = {}
+  }
+
   // 排序筛选的展示列表
   @Builder
   SortRender() {
-    Text('SortRender')
+    Column() {
+      Column() {
+        ForEach(this.sortData.sortList, (sort: ISortItem) => {
+          Row({ space: rvp(8) }) {
+            Image(sort.icon).width(rvp(16))
+            Text(sort.text)
+              .fontSize(14)
+              .fontColor(this.sortData.sort?.id === sort.id ? '#67C0A8' : $r('app.color.gray_second'))
+          }.height(rvp(34)).onClick(this.handleSortChange.bind(this, sort))
+        }, (sort: ISortItem) => sort.id + '')
+      }.padding({ left: rvp(20), top: rvp(8), bottom: rvp(16) }).alignItems(HorizontalAlign.Start)
+    }
+    .width('100%')
+    .backgroundColor($r('app.color.white'))
+    .padding({ left: rvp(PADDING), right: rvp(PADDING) })
+    .alignItems(HorizontalAlign.Start)
+
+
+    Row() {
+    }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.sortClose.bind(this))
   }
 
   build() {

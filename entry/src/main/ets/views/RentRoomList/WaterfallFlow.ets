@@ -54,6 +54,14 @@ export default struct WaterfallFlow {
         this.searchOptions.paymentType = searchOptions.paymentType;
       }
 
+      // 排序
+      if (searchOptions.orderBy) {
+        this.searchOptions.orderBy = searchOptions.orderBy;
+      }
+      if (searchOptions.orderType) {
+        this.searchOptions.orderType = searchOptions.orderType;
+      }
+
       this.getRentRoomList('reloadDataList')
     })
   }
