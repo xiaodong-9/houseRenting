@@ -1,11 +1,14 @@
-import { BORDER_RADIUS_S } from '../../constants/size';
+import { BORDER_RADIUS_S, PADDING } from '../../constants/size';
 import { rvp } from '../../utils/responsive';
 import type {
   ICityItem,
   ICityList,
   IDistrictItem,
+  IPaymentTypeData,
   IProvinceItem,
   IProvinceList,
+  IRentPriceData,
+  IRentPriceItem,
   LocationDataType
 } from '../../model/RentRoomData';
 
@@ -17,7 +20,7 @@ import { globalEmitter } from '../../utils/emitter';
 export default struct SearchFilter {
   @State searchTypeList: string[] = ['地区', '租金', '付款方式', '排序']
   @State currentSearchType: string = '' //当前选中的筛选项
-  // 3. 地区数据
+  // 地区数据
   @State locationData: LocationDataType = {
     provinceList: [],
     cityList: [],
@@ -31,11 +34,82 @@ export default struct SearchFilter {
     searchDistrictCode: '',
     searchDistrictName: ''
   }
+  // 租金数据
+  @State rentPriceData: IRentPriceData = {
+    rentPriceList: [
+      {
+        id: 1,
+        minRent: '0',
+        maxRent: '0',
+        text: '不限'
+      },
+      {
+        id: 2,
+        minRent: '0',
+        maxRent: '1500',
+        text: '1500元以下'
+      },
+      {
+        id: 3,
+        minRent: '1500',
+        maxRent: '2500',
+        text: '1500-2500元'
+      },
+      {
+        id: 4,
+        minRent: '2500',
+        maxRent: '3500',
+        text: '2500-3500元'
+      },
+      {
+        id: 5,
+        minRent: '3500',
+        maxRent: '4500',
+        text: '3500-4500元'
+      },
+      {
+        id: 6,
+        minRent: '4500',
+        maxRent: '6000',
+        text: '4500-6000元'
+      },
+      {
+        id: 7,
+        minRent: '6000',
+        maxRent: '8000',
+        text: '6000-8000元'
+      },
+      {
+        id: 8,
+        minRent: '8000',
+        maxRent: '10000',
+        text: '8000-10000元'
+      },
+      {
+        id: 9,
+        minRent: '10000',
+        maxRent: '0',
+        text: '10000元以上'
+      }
+    ],
+    rentPrice: {},
+    isSearch: false,
+    searchRentPrice: {}
+  }
+  // 付款方式数据
+  @State paymentTypeData: IPaymentTypeData = {
+    paymentTypeList: ['月付', '季付', '半年付', '年付'],
+    isSearch: false,
+    paymentType: '',
+    searchPaymentType: ''
+  }
 
   // 展示筛选标题“地区” 或者 是确切的“北京市/东城区”
   getSearchTypeName(item: string) {
     if (item === '地区') {
       return this.locationData.searchDistrictName || item
+    } else if (item === '租金') {
+      return this.rentPriceData.searchRentPrice.text || item
     }
     return item
   }
@@ -44,6 +118,8 @@ export default struct SearchFilter {
   getSearchTypeNameColor(item: string) {
     if (item === '地区') {
       return this.locationData.searchDistrictName ? $r('app.color.primary') : $r('app.color.black')
+    } else if (item === '租金') {
+      return this.rentPriceData.searchRentPrice.text ? $r('app.color.primary') : $r('app.color.black')
     }
     return item
   }
@@ -61,13 +137,20 @@ export default struct SearchFilter {
       this.locationData.isSearch = false // 不是搜索，只是打开
       this.locationClose()
       this.getProvinceList()
+    } else if (searchType === '租金') {
+      this.rentPriceData.isSearch = false
+      this.rentPriceClose()
+    } else if (searchType === '付款方式') {
+      this.paymentTypeData.isSearch = false
+      this.paymentTypeClose()
     }
 
     // 更新
     this.currentSearchType = searchType;
   }
 
-  // 获取省市区数据方法
+  // ======== 一、地区筛选方法 ========
+  // 地区筛选-获取省市区数据方法
   async getProvinceList() {
     const provinceList: IProvinceList = await getProvinceListApi() //省列表
     this.locationData.provinceList = provinceList
@@ -75,7 +158,7 @@ export default struct SearchFilter {
     this.getCityList() //获取对应城市
   }
 
-  // 获取对应城市
+  // 地区筛选-获取对应城市
   async getCityList() {
     const cityList: ICityList = await getCityListApi(this.locationData.provinceCode)
     this.locationData.cityList = cityList;
@@ -83,14 +166,14 @@ export default struct SearchFilter {
     this.getDistrictList() //获取对应区域
   }
 
-  //获取对应区域
+  //地区筛选-获取对应区域
   async getDistrictList() {
     const districtList = await getDistrictListApi(this.locationData.cityCode)
     this.locationData.districtList = districtList
     this.locationData.districtCode = this.locationData.districtCode || districtList[0].code;
   }
 
-  // 当地区-省份筛选的项发生改变时
+  // 地区筛选-当地区-省份筛选的项发生改变时
   handleProvinceChange(provinceCode: string) {
     this.locationData.provinceCode = provinceCode;
     this.locationData.cityCode = ''
@@ -98,19 +181,19 @@ export default struct SearchFilter {
     this.getCityList()
   }
 
-  // 当地区-城市筛选的项发生改变时
+  // 地区筛选-当地区-城市筛选的项发生改变时
   handleCityChange(cityCode: string) {
     this.locationData.cityCode = cityCode
     this.locationData.districtCode = ''
     this.getDistrictList()
   }
 
-  // 当地区-区域筛选的项发生改变时
+  // 地区筛选-当地区-区域筛选的项发生改变时
   handleDistrictChange(districtCode: string) {
     this.locationData.districtCode = districtCode;
   }
 
-  // 点击查看房源
+  // 地区筛选-点击查看房源
   locationSearch() {
     // 发出数据到公共
     globalEmitter.emit('searchOptionsChange', {
@@ -123,12 +206,11 @@ export default struct SearchFilter {
     this.locationClose()
   }
 
-  // 搜索或点击关闭
+  // 地区筛选-搜索或点击关闭
   locationClose() {
     this.currentSearchType = ''
     if (this.locationData.isSearch) {
       // 点击查看房源 进行搜索
-      console.log('11', JSON.stringify(this.locationData.provinceCode))
       this.locationData.searchProvinceCode = this.locationData.provinceCode
       this.locationData.searchCityCode = this.locationData.cityCode
       this.locationData.searchDistrictCode = this.locationData.districtCode
@@ -142,7 +224,7 @@ export default struct SearchFilter {
     }
   }
 
-  // 重置筛选
+  // 地区筛选-重置筛选
   locationReset() {
     this.locationData.provinceCode = ''
     this.locationData.cityCode = ''
@@ -230,16 +312,71 @@ export default struct SearchFilter {
     }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.locationClose.bind(this))
   }
 
+  // ======== 二、租金筛选方法 ========
+
+  // 租金筛选-租金范围的选项发生变化
+  handleRentPriceChange(rentPrice: IRentPriceItem) {
+    this.rentPriceData.rentPrice = rentPrice
+  }
+
+  // 租金筛选-点击查看房源
+  rentPriceSearch() {
+    globalEmitter.emit('searchOptionsChange', {
+      minRent: this.rentPriceData.rentPrice.minRent,
+      maxRent: this.rentPriceData.rentPrice.maxRent,
+    })
+    this.rentPriceData.isSearch = true;
+    this.rentPriceClose()
+  }
+
+  // 租金筛选-是否筛选
+  rentPriceClose() {
+    this.currentSearchType = ''
+    if (this.rentPriceData.isSearch) {
+      this.rentPriceData.searchRentPrice = this.rentPriceData.rentPrice
+    } else {
+      this.rentPriceData.rentPrice = this.rentPriceData.searchRentPrice
+    }
+  }
+
+  // 租金筛选-重置
+  rentPriceReset() {
+    this.rentPriceData.rentPrice = {}
+  }
+
   // 租金筛选的展示列表
   @Builder
   RentPriceRender() {
-    Text('RentPriceRender')
-  }
+    Column() {
+      Grid() {
+        ForEach(this.rentPriceData.rentPriceList, (rentPrice: IRentPriceItem) => {
+          GridItem() {
+            Text(rentPrice.text)
+              .textStyles(this.rentPriceData.rentPrice.id === rentPrice.id)
+              .onClick(this.handleRentPriceChange.bind(this, rentPrice))
+          }
+        }, (rentPrice: IRentPriceItem) => rentPrice.id + '')
+      }
+      .columnsTemplate('1fr 1fr 1fr')
+      .rowsTemplate('1fr 1fr 1fr')
+      .height(rvp(194 - 58))
 
-  // 付款方式筛选的展示列表
-  @Builder
-  PaymentTypeRender() {
-    Text('PaymentTypeRender')
+      Row({ space: rvp(22) }) {
+        Button('重置')
+          .buttonStyles(rvp(95), '#F0F0F0', $r('app.color.gray_second'))
+          .onClick(this.rentPriceReset.bind(this))
+        Button('查看房源')
+          .buttonStyles(rvp(211), '#67C0A8', $r('app.color.white'))
+          .onClick(this.rentPriceSearch.bind(this))
+      }.height(rvp(58)).width('100%').backgroundColor($r('app.color.white')).justifyContent(FlexAlign.Center)
+    }
+    .height(rvp(202))
+    .width('100%')
+    .backgroundColor($r('app.color.white'))
+    .padding({ left: rvp(PADDING), right: rvp(PADDING) })
+
+    Row() {
+    }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.rentPriceClose.bind(this))
   }
 
   // 排序筛选的展示列表

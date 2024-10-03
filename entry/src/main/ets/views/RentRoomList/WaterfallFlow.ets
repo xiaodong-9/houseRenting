@@ -42,14 +42,27 @@ export default struct WaterfallFlow {
       if (searchOptions.districtCode) {
         this.searchOptions.districtCode = searchOptions.districtCode;
       }
-      this.getRentRoomList()
+      // 租金范围
+      if (searchOptions.minRent) {
+        this.searchOptions.minRent = searchOptions.minRent;
+      }
+      if (searchOptions.maxRent) {
+        this.searchOptions.maxRent = searchOptions.maxRent;
+      }
+
+      this.getRentRoomList('reloadDataList')
     })
   }
 
   // 获取租房列表资源
-  async getRentRoomList() {
+  async getRentRoomList(type?: string) {
     const res = await getRentRoomListApi(this.searchOptions)
-    this.roomRoomListDataSource.pushDataList(res.records)
+    // type=reloadDataList 需要重新加载数据
+    if (type === 'reloadDataList') {
+      this.roomRoomListDataSource.reloadDataList(res.records)
+    } else {
+      this.roomRoomListDataSource.pushDataList(res.records)
+    }
     this.total = res.total
   }
 

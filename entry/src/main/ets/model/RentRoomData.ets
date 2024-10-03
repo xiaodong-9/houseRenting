@@ -163,3 +163,27 @@ export interface LocationDataType {
   searchDistrictCode: string,
   searchDistrictName: string
 }
+
+export interface IRentPriceItem {
+  id?: number;
+  minRent?: string;
+  maxRent?: string;
+  text?: string;
+}
+
+export type IRentPriceList = IRentPriceItem[]
+
+export interface IRentPriceData {
+  rentPriceList: IRentPriceList;
+  rentPrice: IRentPriceItem;
+  isSearch: boolean;
+  searchRentPrice: IRentPriceItem;
+}
+
+
+export interface IPaymentTypeData {
+  paymentTypeList: string[],
+  isSearch: boolean,
+  paymentType: string,
+  searchPaymentType: string
+}
