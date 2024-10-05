@@ -318,7 +318,7 @@ export default struct SearchFilter {
             })
           }.onClick(this.handleProvinceChange.bind(this, item.code))
         }, (item: IProvinceItem) => item.code)
-      }.width(rvp(120)).height('100%').backgroundColor($r('app.color.bg_gray'))
+      }.width(rvp(120)).height('100%').backgroundColor($r('app.color.bg_gray')).scrollBar(BarState.Off)
 
       // 市级
       List() {
@@ -338,7 +338,7 @@ export default struct SearchFilter {
             })
           }.onClick(this.handleCityChange.bind(this, item.code))
         }, (item: ICityItem) => item.code)
-      }.width(rvp(120)).height('100%').backgroundColor('#EBEBEB')
+      }.width(rvp(120)).height('100%').backgroundColor('#EBEBEB').scrollBar(BarState.Off)
 
       // 区域
       List() {
@@ -359,7 +359,7 @@ export default struct SearchFilter {
             })
           }.onClick(this.handleDistrictChange.bind(this, item.code))
         }, (item: IDistrictItem) => item.code)
-      }.width(rvp(120)).height('100%').backgroundColor('#E6E6E6')
+      }.width(rvp(120)).height('100%').backgroundColor('#E6E6E6').scrollBar(BarState.Off)
     }.height(rvp(240)).width('100%').backgroundColor($r('app.color.white'))
 
     Row({ space: rvp(22) }) {
@@ -563,7 +563,7 @@ export default struct SearchFilter {
         ForEach(this.searchTypeList, (item: string) => {
           Row({ space: rvp(6) }) {
             Text(this.getSearchTypeName(item))
-              .fontSize(16)
+              .fontSize(12)
               .fontColor(this.getSearchTypeNameColor(item))
               .maxLines(1)
               .textOverflow({ overflow: TextOverflow.Ellipsis })
@@ -573,7 +573,7 @@ export default struct SearchFilter {
             Image($r('app.media.arrow_down_3')).imageStyles()
           }.width('25%').height('100%').justifyContent(FlexAlign.Center).onClick(this.chooseSearchType.bind(this, item))
         }, (item: string) => item)
-      }.width('100%').height(rvp(44)).justifyContent(FlexAlign.SpaceBetween)
+      }.width('100%').height(rvp(44)).justifyContent(FlexAlign.SpaceBetween).margin({ top: rvp(44) })
 
       // 选中后展示
       if (this.currentSearchType === '地区') {

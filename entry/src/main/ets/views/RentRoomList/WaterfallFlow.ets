@@ -4,12 +4,14 @@ import { ITagItem } from '../../model/RoomRecommendDataSource';
 import { BORDER_RADIUS } from '../../constants/size';
 import { rvp } from '../../utils/responsive';
 import { globalEmitter } from '../../utils/emitter';
+
 import Empty from '../../components/Empty';
 
 @Component
 export default struct WaterfallFlow {
   @State roomRoomListDataSource: RentRoomListDataSource = new RentRoomListDataSource([])
   @State total: number = 0
+  @State loading: boolean = false
   @State searchOptions: IGetRentRoomListParams = {
     "page": 1,
     "limit": 10,
@@ -69,6 +71,7 @@ export default struct WaterfallFlow {
 
   // 获取租房列表资源
   async getRentRoomList(type?: string) {
+    this.loading = true
     const res = await getRentRoomListApi(this.searchOptions)
     // type=reloadDataList 需要重新加载数据
     if (type === 'reloadDataList') {
@@ -77,6 +80,8 @@ export default struct WaterfallFlow {
       this.roomRoomListDataSource.pushDataList(res.records)
     }
     this.total = res.total
+    this.loading = false
+
   }
 
   // 瀑布流下拉到底重新请求数据
@@ -87,10 +92,15 @@ export default struct WaterfallFlow {
 
   @Builder
   footer() {
-    Row({ space: rvp(5) }) {
-      LoadingProgress().width(rvp(20)).height(rvp(20)).color($r('app.color.gray'))
-      Text('加载数据中...').fontSize(rvp(12)).fontColor($r('app.color.gray'))
-    }.width('100%').backgroundColor($r('app.color.white')).justifyContent(FlexAlign.Center)
+    if (this.loading) {
+      Row({ space: rvp(5) }) {
+        LoadingProgress().width(rvp(20)).height(rvp(20)).color($r('app.color.gray'))
+        Text('加载数据中...').fontSize(rvp(12)).fontColor($r('app.color.gray'))
+      }.width('100%').backgroundColor($r('app.color.white')).justifyContent(FlexAlign.Center)
+    } else {
+      Row({ space: rvp(5) }) {
+      }.width('100%')
+    }
   }
 
   build() {
@@ -149,7 +159,7 @@ export default struct WaterfallFlow {
                   }.width('100%').justifyContent(FlexAlign.SpaceBetween)
 
                   Text(room.houseTitle)
-                    .fontSize(rvp(12))
+                    .fontSize(rvp(14))
                     .margin({ top: rvp(1) })
                     .height(rvp(19))
                     .maxLines(1)
@@ -196,6 +206,7 @@ export default struct WaterfallFlow {
       .layoutDirection(FlexDirection.Column) //设置主轴方向
       .padding({ left: rvp(10), right: rvp(10), top: rvp(10) })
       .onReachEnd(this.loadMore) //瀑布流组件到底末尾位置时触发。
+      .margin({ top: rvp(44 + 44) })
     } else {
       Column() {
         Empty({ title: '抱歉，没有搜索到你想要的房子。' }).margin({ top: -rvp(138) })
