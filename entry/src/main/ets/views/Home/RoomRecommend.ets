@@ -48,6 +48,16 @@ export default struct RoomRecommend {
     .padding({ left: PADDING, right: PADDING, top: rvp(23) })
   }
 
+  // 跳转租房详情
+  goRentRoomDetail(id: string) {
+    router.pushUrl({
+      url: 'pages/RentRoom/RentRoomDetail',
+      params: {
+        id
+      }
+    })
+  }
+
   // 房源列表
   @Builder
   RoomList() {
@@ -108,7 +118,7 @@ export default struct RoomRecommend {
               }.margin({ left: rvp(8), top: rvp(99) })
 
             }.alignContent(Alignment.TopStart).backgroundColor($r('app.color.white'))
-          }.height(rvp(210))
+          }.height(rvp(210)).onClick(this.goRentRoomDetail.bind(this, room.id))
         }, (room: IRoomRecommendItem) => room.id)
       }
       .columnsTemplate('1fr 1fr')

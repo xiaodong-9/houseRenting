@@ -6,6 +6,8 @@ import WaterfallFlow from '../../views/RentRoomList/WaterfallFlow'
 @Entry
 @Component
 struct RentRoomList {
+
+
   build() {
     Stack() {
       WaterfallFlow()
