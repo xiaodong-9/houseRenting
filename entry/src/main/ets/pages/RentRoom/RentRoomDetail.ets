@@ -3,6 +3,7 @@ import NavBar from '../../views/RentRoomDetail/NavBar';
 import NavSwiper from '../../views/RentRoomDetail/NavSwiper';
 import RentPrice from '../../views/RentRoomDetail/RentPrice';
 import DiscountsList from '../../views/RentRoomDetail/DiscountsList';
+import MetaInfo from '../../views/RentRoomDetail/MetaInfo';
 
 import ScrollContainer from '../../components/ScrollContainer';
 import { rvp } from '../../utils/responsive';
@@ -59,6 +60,7 @@ export default struct RentRoomDetail {
     Column() {
       RentPrice({ rentPriceListing: this.room.rentPriceUnitListing, rentPriceUnit: this.room.rentPriceUnit })
       DiscountsList({ discountsList: this.discountsList })
+      MetaInfo({ metaInfoList: $metaInfoList, distanceInfo: $distanceInfo })
 
     }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
   }
