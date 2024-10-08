@@ -2,6 +2,8 @@ import router from '@ohos.router';
 import NavBar from '../../views/RentRoomDetail/NavBar';
 import NavSwiper from '../../views/RentRoomDetail/NavSwiper';
 import RentPrice from '../../views/RentRoomDetail/RentPrice';
+import DiscountsList from '../../views/RentRoomDetail/DiscountsList';
+
 import ScrollContainer from '../../components/ScrollContainer';
 import { rvp } from '../../utils/responsive';
 import { PADDING } from '../../constants/size';
@@ -56,6 +58,8 @@ export default struct RentRoomDetail {
     NavSwiper({ housePictureList: this.housePictureList })
     Column() {
       RentPrice({ rentPriceListing: this.room.rentPriceUnitListing, rentPriceUnit: this.room.rentPriceUnit })
+      DiscountsList({ discountsList: this.discountsList })
+
     }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
   }
 
