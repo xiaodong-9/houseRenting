@@ -287,6 +287,7 @@ export interface IRentRoomDetail extends Omit<IRentRoomItem, 'housePicture'> {
   "householdItem": IHouseholdList
   "support": ISupportList
   "rentInfo": IRentInfoList
+  'rentPriceUnitListing': string
 }
 
 

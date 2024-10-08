@@ -1,11 +1,11 @@
-import router from '@ohos.router'
-
-import NavBar from '../../views/RentRoomDetail/NavBar'
-import NavSwiper from '../../views/RentRoomDetail/NavSwiper'
-
-import ScrollContainer from '../../components/ScrollContainer'
-
-import { getRentRoomDetailApi } from '../../api/rentRoom'
+import router from '@ohos.router';
+import NavBar from '../../views/RentRoomDetail/NavBar';
+import NavSwiper from '../../views/RentRoomDetail/NavSwiper';
+import RentPrice from '../../views/RentRoomDetail/RentPrice';
+import ScrollContainer from '../../components/ScrollContainer';
+import { rvp } from '../../utils/responsive';
+import { PADDING } from '../../constants/size';
+import { getRentRoomDetailApi } from '../../api/rentRoom';
 import type {
   IDiscountsList,
   IDistanceInfo,
@@ -13,7 +13,7 @@ import type {
   IMetaInfoList,
   IRentRoomDetail,
   IRentRoomDetailParams,
-} from '../../model/RentRoomData'
+} from '../../model/RentRoomData';
 
 
 @Entry
@@ -21,7 +21,7 @@ import type {
 export default struct RentRoomDetail {
   @State housePictureList: IHousePictureList = []
   @State room: Partial<IRentRoomDetail> = {
-    rentPriceListing: '',
+    rentPriceUnitListing: '',
     rentPriceUnit: ''
   }
   @State discountsList: IDiscountsList = []
@@ -53,10 +53,10 @@ export default struct RentRoomDetail {
 
   @Builder
   ContentRender() {
+    NavSwiper({ housePictureList: this.housePictureList })
     Column() {
-      NavSwiper({ housePictureList: this.housePictureList })
-
-    }.height('100%').width('100%')
+      RentPrice({ rentPriceListing: this.room.rentPriceUnitListing, rentPriceUnit: this.room.rentPriceUnit })
+    }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
   }
 
   build() {
