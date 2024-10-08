@@ -4,6 +4,7 @@ import NavSwiper from '../../views/RentRoomDetail/NavSwiper';
 import RentPrice from '../../views/RentRoomDetail/RentPrice';
 import DiscountsList from '../../views/RentRoomDetail/DiscountsList';
 import MetaInfo from '../../views/RentRoomDetail/MetaInfo';
+import TagList from '../../views/RentRoomDetail/TagList';
 
 import ScrollContainer from '../../components/ScrollContainer';
 import { rvp } from '../../utils/responsive';
@@ -16,6 +17,7 @@ import type {
   IMetaInfoList,
   IRentRoomDetail,
   IRentRoomDetailParams,
+  ITagList
 } from '../../model/RentRoomData';
 
 
@@ -30,8 +32,7 @@ export default struct RentRoomDetail {
   @State discountsList: IDiscountsList = []
   @State metaInfoList: IMetaInfoList = []
   @State distanceInfo: Partial<IDistanceInfo> = {}
-
-  // @State tagList: ITagList = []
+  @State tagList: ITagList = []
 
   aboutToAppear() {
     this.getRentRoomDetail()
@@ -46,7 +47,7 @@ export default struct RentRoomDetail {
     this.discountsList = room.discounts
     this.metaInfoList = room.metaInfo
     this.distanceInfo = room.distance_info
-    // this.tagList = room.tags
+    this.tagList = room.tags
   }
 
   @Builder
@@ -61,7 +62,7 @@ export default struct RentRoomDetail {
       RentPrice({ rentPriceListing: this.room.rentPriceUnitListing, rentPriceUnit: this.room.rentPriceUnit })
       DiscountsList({ discountsList: this.discountsList })
       MetaInfo({ metaInfoList: $metaInfoList, distanceInfo: $distanceInfo })
-
+      TagList({ tagList: $tagList })
     }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
   }
 

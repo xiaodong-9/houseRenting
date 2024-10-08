@@ -299,3 +299,10 @@ export interface itemPicType {
   currentTabIndex: number,
   url: string
 }
+
+export interface ITagItem {
+  "name": string
+}
+
+
+export type ITagList = ITagItem[]
