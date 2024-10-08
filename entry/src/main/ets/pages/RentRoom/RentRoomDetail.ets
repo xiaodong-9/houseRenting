@@ -5,6 +5,7 @@ import RentPrice from '../../views/RentRoomDetail/RentPrice';
 import DiscountsList from '../../views/RentRoomDetail/DiscountsList';
 import MetaInfo from '../../views/RentRoomDetail/MetaInfo';
 import TagList from '../../views/RentRoomDetail/TagList';
+import RentTerm from '../../views/RentRoomDetail/RentTerm';
 
 import ScrollContainer from '../../components/ScrollContainer';
 import { rvp } from '../../utils/responsive';
@@ -17,6 +18,7 @@ import type {
   IMetaInfoList,
   IRentRoomDetail,
   IRentRoomDetailParams,
+  IRentTerm,
   ITagList
 } from '../../model/RentRoomData';
 
@@ -33,6 +35,7 @@ export default struct RentRoomDetail {
   @State metaInfoList: IMetaInfoList = []
   @State distanceInfo: Partial<IDistanceInfo> = {}
   @State tagList: ITagList = []
+  @State rentTerm: Partial<IRentTerm> = {}
 
   aboutToAppear() {
     this.getRentRoomDetail()
@@ -48,6 +51,8 @@ export default struct RentRoomDetail {
     this.metaInfoList = room.metaInfo
     this.distanceInfo = room.distance_info
     this.tagList = room.tags
+    this.rentTerm = room.rentTerm
+
   }
 
   @Builder
@@ -63,6 +68,8 @@ export default struct RentRoomDetail {
       DiscountsList({ discountsList: this.discountsList })
       MetaInfo({ metaInfoList: $metaInfoList, distanceInfo: $distanceInfo })
       TagList({ tagList: $tagList })
+      RentTerm({ rentTerm: $rentTerm })
+
     }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
   }
 
