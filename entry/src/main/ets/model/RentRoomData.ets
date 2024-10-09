@@ -257,7 +257,7 @@ export interface IItemList {
 
 export interface IHouseholdItem {
   "name": string
-  "itemList": IItemList
+  "itemList": IItemList[]
 }
 
 export type IHouseholdList = IHouseholdItem[]
