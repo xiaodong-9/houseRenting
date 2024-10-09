@@ -15,4 +15,8 @@ export interface codeReturn {
   token: string
 }
 
+export interface currentTabBarIndexType {
+  currentTabBarIndex: number
+}
+
 

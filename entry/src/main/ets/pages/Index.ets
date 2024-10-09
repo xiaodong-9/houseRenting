@@ -5,6 +5,11 @@ import Discover from './Discover';
 import My from './My';
 import { getWindowBottomHeight, rvp } from '../utils/responsive';
 import type { IColors } from '../model/ColorsData';
+import router from '@ohos.router';
+import type { currentTabBarIndexType } from '../model/loginCodeData';
+
+// 必须放在入口页面
+PersistentStorage.persistProp('token', '')
 
 @Entry
 @Component
@@ -13,6 +18,14 @@ struct Index {
   @StorageLink('navBarBgColor') navBarBgColor: string = ''
   @State currentTabBarIndex: number = 0; //当前高亮的下标
   colors: IColors = []
+
+  // 进入页面获取当前高亮的下标
+  aboutToAppear() {
+    const params = router.getParams() as currentTabBarIndexType
+    if (params) {
+      this.currentTabBarIndex = params.currentTabBarIndex
+    }
+  }
 
   @Builder
   TabBuilder(image: Resource, activeImage: Resource, text: string, index: number) {
@@ -47,7 +60,7 @@ struct Index {
       }.tabBar(this.TabBuilder($r('app.media.tabbar_discover'), $r('app.media.tabbar_discover_active'), '发现', 3))
 
       TabContent() {
-        My()
+        My({ isActiveTab: this.currentTabBarIndex === 4 })
       }.tabBar(this.TabBuilder($r('app.media.tabbar_my'), $r('app.media.tabbar_my_active'), '我的', 4))
     }
     .vertical(false)
@@ -64,7 +77,6 @@ struct Index {
       // 将当前页面的color赋值上去
       this.navBarFontColor = this.colors[index]?.navBarFontColor || 'rgb(255, 255, 255)'
       this.navBarBgColor = this.colors[index]?.navBarBgColor || 'rgba(255, 255, 255, 0)'
-
 
       this.currentTabBarIndex = index
     })
