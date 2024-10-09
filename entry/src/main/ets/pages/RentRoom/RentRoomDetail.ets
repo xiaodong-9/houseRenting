@@ -8,7 +8,8 @@ import TagList from '../../views/RentRoomDetail/TagList';
 import RentTerm from '../../views/RentRoomDetail/RentTerm';
 import RentInfo from '../../views/RentRoomDetail/RentInfo';
 import HouseholdItem from '../../views/RentRoomDetail/HouseholdItem';
-import SupportList from '../../views/RentRoomDetail/SupportList'
+import SupportList from '../../views/RentRoomDetail/SupportList';
+import Book from '../../views/RentRoomDetail/Book';
 
 import ScrollContainer from '../../components/ScrollContainer';
 import { rvp } from '../../utils/responsive';
@@ -84,12 +85,20 @@ export default struct RentRoomDetail {
       RentInfo({ rentInfoList: $rentInfoList })
       HouseholdItem({ householdList: $householdList })
       SupportList({ supportList: $supportList })
-
+      Button('查看全部内容')
+        .type(ButtonType.Normal)
+        .width('100%')
+        .height(rvp(44))
+        .fontSize(14)
+        .fontColor('#ABA9AC')
+        .margin({ top: rvp(25) })
+        .backgroundColor($r('app.color.white'))
+        .border({ width: 1, color: '#F5F5F5', radius: rvp(4) })
     }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
   }
 
   build() {
-    Column() {
+    Stack() {
       ScrollContainer({
         contentBuilder: () => {
           this.ContentRender()
@@ -98,6 +107,8 @@ export default struct RentRoomDetail {
           this.NavBarRender()
         },
       })
-    }.height('100%')
+      Book()
+
+    }.height('100%').alignContent(Alignment.Bottom) //布局-后面的组件留在底部
   }
 }
