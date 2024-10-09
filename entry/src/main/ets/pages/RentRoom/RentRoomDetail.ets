@@ -10,6 +10,7 @@ import RentInfo from '../../views/RentRoomDetail/RentInfo';
 import HouseholdItem from '../../views/RentRoomDetail/HouseholdItem';
 import SupportList from '../../views/RentRoomDetail/SupportList';
 import Book from '../../views/RentRoomDetail/Book';
+import BookRentRoom from '../../views/RentRoomDetail/BookRentRoom';
 
 import ScrollContainer from '../../components/ScrollContainer';
 import { rvp } from '../../utils/responsive';
@@ -46,6 +47,7 @@ export default struct RentRoomDetail {
   @State rentInfoList: IRentInfoList = []
   @State householdList: IHouseholdList = []
   @State supportList: ISupportList = []
+  @State show: boolean = false
 
   aboutToAppear() {
     this.getRentRoomDetail()
@@ -106,7 +108,9 @@ export default struct RentRoomDetail {
           this.NavBarRender()
         },
       })
-      Book()
+      Book({ show: $show })
+
+      BookRentRoom({ show: $show })
 
     }.height('100%').alignContent(Alignment.Bottom) //布局-后面的组件留在底部
   }

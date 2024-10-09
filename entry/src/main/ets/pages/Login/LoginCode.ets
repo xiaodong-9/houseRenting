@@ -9,7 +9,7 @@ import type { sendSMSCodeParms } from '../../model/loginCodeData'
 @Entry
 @Component
 struct LoginCode {
-  @StorageLink('token') token: string = ''
+  @StorageLink('token') token: string = '' //全局存储，双向绑定
   // 发送验证码
   @State phone: string = ''
   // 倒计时
@@ -66,7 +66,7 @@ struct LoginCode {
       // 持久化存储 token
       this.token = loginReturn.token
       // 跳转回去
-      router.pushUrl({ url: 'pages/Index', params: { currentIndex: 4 } })
+      router.pushUrl({ url: 'pages/Index', params: { currentTabBarIndex: 4 } })
     } catch {
       showToast('验证码不正确')
     }

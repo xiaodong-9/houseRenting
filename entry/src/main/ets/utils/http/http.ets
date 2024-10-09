@@ -1,21 +1,22 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from '@ohos/axios';
 
 const request = axios.create({
-  baseURL: 'http://192.168.1.102:6060', // 通过 ipconfig 查询当前电脑的 ip，使用自己电脑的 ip 地址
+  baseURL: 'http://192.168.1.101:6060', // 通过 ipconfig 查询当前电脑的 ip，使用自己电脑的 ip 地址
   timeout: 20000,
 })
 
 request.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // 未来需要添加 token
-    // config.headers.token = token;
+    const token = AppStorage.get('token') as string;
+    if (token) {
+      config.headers.token = token;
+    }
     return config;
   }
 )
 
 request.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log('---1', JSON.stringify(response))
     if (response.data.code === 200) {
       return response.data.data;
     } else {
@@ -23,7 +24,6 @@ request.interceptors.response.use(
     }
   },
   (error: AxiosError) => {
-    console.log('---2', JSON.stringify(error))
     return Promise.reject(error.message);
   }
 )
