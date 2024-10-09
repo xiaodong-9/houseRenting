@@ -53,8 +53,7 @@ export default struct RentRoomDetail {
 
   async getRentRoomDetail() {
     const params = router.getParams() as IRentRoomDetailParams
-    // this.room = await getRentRoomDetailApi(params.id)
-    const room = await getRentRoomDetailApi('BJ1623160852024655872')
+    const room = await getRentRoomDetailApi(params.id)
     this.room = room;
     this.housePictureList = room.housePicture
     this.discountsList = room.discounts
