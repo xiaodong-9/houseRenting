@@ -8,6 +8,7 @@ import TagList from '../../views/RentRoomDetail/TagList';
 import RentTerm from '../../views/RentRoomDetail/RentTerm';
 import RentInfo from '../../views/RentRoomDetail/RentInfo';
 import HouseholdItem from '../../views/RentRoomDetail/HouseholdItem';
+import SupportList from '../../views/RentRoomDetail/SupportList'
 
 import ScrollContainer from '../../components/ScrollContainer';
 import { rvp } from '../../utils/responsive';
@@ -23,6 +24,7 @@ import type {
   IRentRoomDetail,
   IRentRoomDetailParams,
   IRentTerm,
+  ISupportList,
   ITagList
 } from '../../model/RentRoomData';
 
@@ -42,6 +44,7 @@ export default struct RentRoomDetail {
   @State rentTerm: Partial<IRentTerm> = {}
   @State rentInfoList: IRentInfoList = []
   @State householdList: IHouseholdList = []
+  @State supportList: ISupportList = []
 
   aboutToAppear() {
     this.getRentRoomDetail()
@@ -60,6 +63,7 @@ export default struct RentRoomDetail {
     this.rentTerm = room.rentTerm
     this.rentInfoList = room.rentInfo
     this.householdList = room.householdItem
+    this.supportList = room.support
 
   }
 
@@ -79,6 +83,7 @@ export default struct RentRoomDetail {
       RentTerm({ rentTerm: $rentTerm })
       RentInfo({ rentInfoList: $rentInfoList })
       HouseholdItem({ householdList: $householdList })
+      SupportList({ supportList: $supportList })
 
     }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
   }
