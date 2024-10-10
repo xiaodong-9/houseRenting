@@ -48,6 +48,7 @@ export default struct RentRoomDetail {
   @State householdList: IHouseholdList = []
   @State supportList: ISupportList = []
   @State show: boolean = false
+  @State roomId: string = ''
 
   aboutToAppear() {
     this.getRentRoomDetail()
@@ -55,6 +56,7 @@ export default struct RentRoomDetail {
 
   async getRentRoomDetail() {
     const params = router.getParams() as IRentRoomDetailParams
+    this.roomId = params.id
     const room = await getRentRoomDetailApi(params.id)
     this.room = room;
     this.housePictureList = room.housePicture
@@ -110,7 +112,7 @@ export default struct RentRoomDetail {
       })
       Book({ show: $show })
 
-      BookRentRoom({ show: $show })
+      BookRentRoom({ show: $show, roomId: this.roomId })
 
     }.height('100%').alignContent(Alignment.Bottom) //布局-后面的组件留在底部
   }

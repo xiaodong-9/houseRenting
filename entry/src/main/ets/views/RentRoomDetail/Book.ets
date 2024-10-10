@@ -1,8 +1,11 @@
+import router from '@ohos.router';
 import { rvp } from '../../utils/responsive'
 
 @Component
 export default struct Book {
   @Link show: boolean
+
+  @StorageProp('token') token: string = '';
 
   build() {
     Row() {
@@ -22,9 +25,13 @@ export default struct Book {
         .padding({ left: rvp(30), right: rvp(30) })
         .height(rvp(34))
         .onClick(() => {
+          // 需要登陆
+          if (!this.token) {
+            router.pushUrl({ url: 'pages/Login/LoginPhone' })
+            return
+          }
           this.show = true
         })
-
       Button('去看房', { type: ButtonType.Normal })
         .borderRadius(rvp(2))
         .backgroundColor('#6BE3BE')
