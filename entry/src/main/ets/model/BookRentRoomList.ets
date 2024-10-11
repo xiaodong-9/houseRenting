@@ -4,7 +4,12 @@ export interface IBookRentRoomItem {
   "houseId": string
   "date": string
   "name": string
-  "comment": string
+  "comment": string,
+  'img':string,
+  'title':string,
+  'subTitle':string,
+  'distanceInfo':string
+  'rentPrice':string
 }
 
 export type IBookRentRoomList = IBookRentRoomItem[]

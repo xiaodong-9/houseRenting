@@ -66,7 +66,7 @@ struct LoginCode {
       // 持久化存储 token
       this.token = loginReturn.token
       // 跳转回去
-      router.pushUrl({ url: 'pages/Index', params: { currentTabBarIndex: 0 } })
+      router.pushUrl({ url: 'pages/Index', params: { currentTabBarIndex: 4 } })
     } catch {
       showToast('验证码不正确')
     }

@@ -16,7 +16,7 @@ PersistentStorage.persistProp('token', '')
 struct Index {
   @StorageLink('navBarFontColor') navBarFontColor: string = ''
   @StorageLink('navBarBgColor') navBarBgColor: string = ''
-  @State currentTabBarIndex: number = 0; //当前高亮的下标
+  @State currentTabBarIndex: number = 4; //当前高亮的下标
   colors: IColors = []
 
   // 进入页面获取当前高亮的下标
